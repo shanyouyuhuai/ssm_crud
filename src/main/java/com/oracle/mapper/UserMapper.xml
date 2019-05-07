@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oracle.mapper.UserMapper">
+
+	<insert id="saveuser" parameterType="com.oracle.web.bean.User">
+
+		insert into user (username,password) value (#{username},#{password})
+	</insert>
+
+	<select id="selectuser" parameterType="com.oracle.web.bean.User"
+		resultType="User">
+
+		select * from user
+		<where>
+			<if test="username!=null and username!=''">
+				and username=#{username}
+			</if>
+			<if test="password!=null and password!=''">
+
+				and password=#{password}
+			</if>
+		</where>
+	</select>
+
+	<resultMap type="User" id="UserResult">
+		<id column="USER_ID" jdbcType="INTEGER" property="id" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="username" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+	</resultMap>
+	<select id="validateUser" parameterType="User" resultMap="UserResult">
+	
+		select * from user where username = #{username}
+	</select>
+
+</mapper>
